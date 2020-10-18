@@ -1,5 +1,7 @@
 # TogetherNow
 
+![](Screeny.PNG)
+
 Due to social distancing, I think people have begun to realise how important it is to collaborate and try to stay connected. A simple environment filled with the presence of your friends or family can be a warm and pleasant feeling. 
 
 Together Now is a virtual exhibition of 30 students who I have met throughout my 3 years of Communication Design. The concept is to create a space that we can all relate to and feel at home and together, despite the restrictions throughout 2020. 
