@@ -1,0 +1,328 @@
+<!-- Created by Jamie Tung as a part of Communication Design graduation work.
+Typefaces: Avara - Raphaël Bastide | WorkSans - Wei Huang
+
+References & Resources:
+// https://github.com/mrdoob/three.js/issues/12554
+// https://www.youtube.com/watch?v=tsMHONmUkvI&t=422s&ab_channel=DevEd
+//https://sbcode.net/threejs/pointerlock-controls/
+// https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_pointerlock.html -->
+
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		 <link type="text/css" rel="stylesheet" href="style.css">
+
+	</head>
+	<body>
+		<header>
+			<div class="bot">
+			<h1> W A S D To Move | Mouse to look around | Esc to unlock </h1>
+		</header>
+
+		<div id="intro" class="intro">
+
+			<h2> Welcome to Together Now<br>	<br>
+
+				 This is a virtual replication of RMIT's Building 9 Level 3 <br>
+				 created by Jamie Tung for his graduation piece. Inside is a<br>
+			   collection of Communication Design students' works of design students<br>
+			   that I have met throughout the three years. Due to covid circumstances,<br>
+				 Together Now has been built to embrace the adaption to online learning whilst <br>
+			  	still creating the familiarity of a place we spent learning and making memories.<br>
+					------------------------------------------------------------------------------
+				 <br>
+				 Sorry I couldn't include everyone but please visit our gradshow <br>
+				 website to see all the students and their hard work @ <br><br>
+				 Thankyou to: Everyone involved, Three.js Discord and my sister. <br>
+			   Typefaces: Avara - Raphaël Bastide | WorkSans - Wei Huang <br><br>
+				 Click to enter | WASD/Arrow keys to move | Mouse to look around | Esc to exit
+		</h2>
+		</div>
+
+
+
+		<!-- <div class="scene"></div> -->
+		<script src="libraries/three.min.js"></script>
+		<script src="libraries/PointerLockControls.js"></script>
+		<script src="libraries/GLTFLoader.js"></script>
+
+		<video id="video" loop crossOrigin="anonymous" playsinline style="display:none" muted >
+		</video>
+
+		<video id="video2" loop crossOrigin="anonymous2" playsinline style="display:none" muted >
+		</video>
+
+
+<script>
+
+
+
+	    var scene,camera,renderer, controls, model;
+
+	    var moveForward = false;
+	    var moveBackward = false;
+	    var moveLeft = false;
+	    var moveRight = false;
+
+	    var vertex = new THREE.Vector3();
+	    var raycaster;
+
+	    var prevTime = performance.now();
+	    var velocity = new THREE.Vector3();
+	    var direction = new THREE.Vector3();
+
+	    init();
+	    animate();
+
+function init(){
+
+scene = new THREE.Scene();
+scene.background = new THREE.Color( 0xFFFFFF );
+// fog
+scene.fog = new THREE.Fog(0xFFFFFF, 10, 500);
+
+// first video =====================================================
+
+var video = document.getElementById( 'video' );
+var texture = new THREE.VideoTexture(video);
+texture.minFilter = THREE.LinearFilter;
+texture.magFilter = THREE.LinearFilter;
+texture.format = THREE.RGBFormat;
+texture.crossOrigin = 'anonymous';
+
+var imageObject = new THREE.Mesh(
+new THREE.PlaneBufferGeometry(72/2, 45/2),
+
+new THREE.MeshBasicMaterial({ map: texture }),);
+
+scene.add( imageObject );
+video.src = "sound/a.mp4";
+video.load();
+video.play();
+imageObject.position.set(24.5,6.2,-105);
+imageObject.rotation.y = -1.57;
+
+// second video2 =====================================================
+
+var video2 = document.getElementById( 'video2' );
+var texture2 = new THREE.VideoTexture(video2);
+texture2.minFilter = THREE.LinearFilter;
+texture2.magFilter = THREE.LinearFilter;
+texture2.format = THREE.RGBFormat;
+texture2.crossOrigin = 'anonymous2';
+
+var imageObject2 = new THREE.Mesh(
+new THREE.PlaneBufferGeometry(72/1.2, 45/1.2),
+
+new THREE.MeshBasicMaterial({ map: texture2 }),);
+
+scene.add( imageObject2 );
+video2.src = "sound/m.mp4";
+video2.load();
+video2.play();
+imageObject2.position.set(132,3,-225);
+imageObject2.rotation.y = -1.57;
+
+
+//Camera Things
+camera = new THREE.PerspectiveCamera( 60, window.innerWidth/ window.innerHeight, 1, 500 );
+camera.position.set(250,0,0);
+camera.rotation.y = 1.10;
+
+
+// Lighting Things
+const ambient = new THREE.AmbientLight(0xf7e8cf,0.9);
+scene.add(ambient);
+
+
+// Renderer
+renderer = new THREE.WebGLRenderer(); //{antialias:true}
+
+// for strange three.js lighting correction
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+
+//Injects the canvas into HTML Page
+document.body.appendChild( renderer.domElement );
+
+// controls
+controls = new THREE.PointerLockControls(camera, document.body);
+
+// Coverpage
+var intro = document.getElementById( 'intro' );
+document.body.addEventListener( 'click', function () {
+controls.lock();
+}, false );
+
+controls.addEventListener( 'lock', function () {
+intro.style.display = 'none';
+} );
+
+controls.addEventListener( 'unlock', function () {
+intro.style.display = 'block';
+} );
+
+scene.add( controls.getObject() );
+
+//Keybinds
+
+ 		var onKeyDown = function (event) {
+		switch (event.keyCode) {
+
+		case 87: // w
+		case 38: // up
+		moveForward = true;
+		break;
+
+		case 65: // a
+		case 37: // left
+		moveLeft = true;
+		break;
+
+		case 83: // s
+		case 40: // down
+		moveBackward = true;
+		break;
+
+		case 68: // d
+		case 39: // right
+		moveRight = true;
+		break;
+		}
+		};
+
+
+		var onKeyUp = function ( event ) {
+		switch ( event.keyCode ) {
+
+
+		case 87: // w
+		case 38: // up
+		moveForward = false;
+		break;
+
+
+		case 65: // a
+		case 37: // left
+		moveLeft = false;
+		break;
+
+
+		case 83: // s
+		case 40: // down
+		moveBackward = false;
+		break;
+
+
+		case 68: // d
+		case 39: // right
+		moveRight = false;
+		break;
+
+		}
+
+		};
+
+
+
+document.addEventListener('keydown', onKeyDown, false);
+document.addEventListener( 'keyup', onKeyUp, false );
+
+raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+
+var floorGeometry = new THREE.PlaneBufferGeometry( 2000, 2000, 100, 100 );
+floorGeometry.rotateX( - Math.PI / 2 );
+
+var position = floorGeometry.attributes.position;
+
+	for ( var i = 0, l = position.count; i < l; i ++ ) {
+
+					vertex.fromBufferAttribute( position, i );
+
+					vertex.x += Math.random() * 20 - 10;
+					vertex.y += Math.random() * 2;
+					vertex.z += Math.random() * 20 - 10;
+
+					position.setXYZ( i, vertex.x, vertex.y, vertex.z );
+
+				}
+
+
+}
+
+
+
+// Load Model
+		new THREE.GLTFLoader().load('3d/Beta/Final.gltf', result => {
+		model = result.scene;
+		model.position.set(0,-28,-340);
+		scene.add(model);
+	  });
+
+
+		new THREE.GLTFLoader().load('3d/Sueboxy/suebox.gltf', result => {
+	 	model2 = result.scene;
+	 	model2.scale.set(0.15,0.15,0.15);
+	 	model2.position.set(-132,-35,-389);
+	 	model2.rotation.y = 2.35;
+	 	scene.add(model2);
+	 	});
+
+
+
+//Animation
+function animate() {
+
+requestAnimationFrame( animate );
+
+var time = performance.now();
+
+if ( controls.isLocked === true ) {
+
+	raycaster.ray.origin.copy( controls.getObject().position );
+	raycaster.ray.origin.y -= 10;
+
+
+	var delta = ( time - prevTime ) / 1000;
+
+	velocity.x -= velocity.x * 10.0 * delta;
+	velocity.z -= velocity.z * 10.0 * delta;
+
+
+	direction.z = Number( moveForward ) - Number( moveBackward );
+	direction.x = Number( moveRight ) - Number( moveLeft );
+	direction.normalize();
+
+	if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
+  if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
+
+	controls.moveRight( - velocity.x * delta );
+	controls.moveForward( - velocity.z * delta );
+
+	}
+
+
+
+prevTime = time;
+renderer.render( scene, camera);
+}
+
+// Resize function
+			function onWindowResize(){
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix( );
+			renderer.setSize(window.innerWidth , window.innerHeight);
+		};
+			window.addEventListener('resize',onWindowResize,false);
+
+
+
+
+		</script>
+	</body>
+</html>
