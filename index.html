@@ -5,7 +5,10 @@ References & Resources:
 // https://github.com/mrdoob/three.js/issues/12554
 // https://www.youtube.com/watch?v=tsMHONmUkvI&t=422s&ab_channel=DevEd
 //https://sbcode.net/threejs/pointerlock-controls/
+// Music ambience https://www.youtube.com/watch?v=PtNQnpnOzb8&ab_channel=TheHollywoodEdgeSoundEffectsLibrary-Topic
+// p v g Daisuke Miyatani -  https://www.youtube.com/watch?v=Spfpgb2sWFE&ab_channel=DaisukeMiyatani-Topic
 // https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_pointerlock.html -->
+
 
 
 <!DOCTYPE html>
@@ -13,7 +16,7 @@ References & Resources:
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Together Now Gallery</title>
+		<title>My first three.js app</title>
 		 <link type="text/css" rel="stylesheet" href="style.css">
 
 	</head>
@@ -28,18 +31,17 @@ References & Resources:
 			<h2> Welcome to Together Now<br>	<br>
 
 				 This is a virtual replication of RMIT's Building 9 Level 3 <br>
-				 created by Jamie Tung for his graduation piece. Inside is<br>
-			         a collection of Communication Design students' works that I <br>
-			         have met throughout the three years. Due to covid circumstances,<br>
+				 created by Jamie Tung for his graduation piece. Inside is a<br>
+			   collection of Communication Design students' works of design students<br>
+			   that I have met throughout the three years. Due to covid circumstances,<br>
 				 Together Now has been built to embrace the adaption to online learning whilst <br>
 			  	still creating the familiarity of a place we spent learning and making memories.<br>
 					------------------------------------------------------------------------------
 				 <br>
 				 Sorry I couldn't include everyone but please visit our gradshow <br>
-				 website to see all the students and their hard work at rmitlookwemadeit.com <br><br>
-				 Thankyou to: Everyone involved, Three.js Discord and Amy Tung. <br>
-			   Typefaces: Avara - Raphaël Bastide | WorkSans - Wei Huang <br>
-				My socials: @weekly_Jam | Studio-Jams.com <br><br>
+				 website to see all the students and their hard work @ <br><br>
+				 Thankyou to: Everyone involved, Three.js Discord and my sister. <br>
+			   Typefaces: Avara - Raphaël Bastide | WorkSans - Wei Huang <br><br>
 				 Click to enter | WASD/Arrow keys to move | Mouse to look around | Esc to exit
 		</h2>
 		</div>
@@ -85,6 +87,34 @@ scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xFFFFFF );
 // fog
 scene.fog = new THREE.Fog(0xFFFFFF, 10, 500);
+
+// Audio  =====================================================
+
+var listener = new THREE.AudioListener();
+
+var audio = new THREE.Audio( listener );
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load('sound/pvg.mp3', function( buffer ) {
+
+audio.setBuffer( buffer );
+audio.setVolume( 0.1 );
+audio.setLoop( true );
+audio.play();
+
+});
+
+var audio2 = new THREE.Audio( listener );
+var audioLoader2 = new THREE.AudioLoader();
+audioLoader2.load('sound/ambience.mp3', function( buffer ) {
+
+audio2.setBuffer( buffer );
+audio2.setVolume( 0.1 );
+audio2.setLoop( true );
+audio2.play();
+
+});
+
+
 
 // first video =====================================================
 
