@@ -90,29 +90,33 @@ scene.fog = new THREE.Fog(0xFFFFFF, 10, 500);
 
 // Audio  =====================================================
 
-var listener = new THREE.AudioListener();
+      document.body.addEventListener( 'click', function (run) {
+	var listener = new THREE.AudioListener();
 
-var audio = new THREE.Audio( listener );
-var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sound/pvg.mp3', function( buffer ) {
+	var audio = new THREE.Audio( listener );
+	var audioLoader = new THREE.AudioLoader();
+	audioLoader.load('sound/pvg.mp3', function( buffer ) {
 
-audio.setBuffer( buffer );
-audio.setVolume( 0.1 );
-audio.setLoop( true );
-audio.play();
+	audio.setBuffer( buffer );
+	audio.setVolume( 0.1 );
+	audio.setLoop( true );
+	audio.play();
 
-});
+	});
 
-var audio2 = new THREE.Audio( listener );
-var audioLoader2 = new THREE.AudioLoader();
-audioLoader2.load('sound/ambience.mp3', function( buffer ) {
+	var audio2 = new THREE.Audio( listener );
+	var audioLoader2 = new THREE.AudioLoader();
+	audioLoader2.load('sound/ambience.mp3', function( buffer ) {
 
-audio2.setBuffer( buffer );
-audio2.setVolume( 0.1 );
-audio2.setLoop( true );
-audio2.play();
+	audio2.setBuffer( buffer );
+	audio2.setVolume( 0.1 );
+	audio2.setLoop( true );
+	audio2.play();
 
-});
+	});
+   });
+
+}
 
 
 
