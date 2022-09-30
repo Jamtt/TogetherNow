@@ -9,64 +9,71 @@ References & Resources:
 // p v g Daisuke Miyatani -  https://www.youtube.com/watch?v=Spfpgb2sWFE&ab_channel=DaisukeMiyatani-Topic
 // https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_pointerlock.html -->
 
-
-
 <!DOCTYPE html>
-
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>My first three.js app</title>
-		 <link type="text/css" rel="stylesheet" href="style.css">
-
+		<title>Together Now</title>
+		 <link rel="icon" type="image" href="/Assets/fav.jpg">
+		 	<link type="text/css" rel="stylesheet" href="style.css">
 	</head>
+
+
 	<body>
-		<header>
-			<div class="bot">
-			<h1> W A S D To Move | Mouse to look around | Esc to unlock </h1>
-		</header>
-
 		<div id="intro" class="intro">
-
-			<h2> Welcome to Together Now<br>	<br>
-
-				 This is a virtual replication of RMIT's Building 9 Level 3 <br>
-				 created by Jamie Tung for his graduation piece. Inside is<br>
-			   	 a collection of Communication Design students' works that I<br>
-			   	 have met throughout the three years. Due to covid circumstances,<br>
-				 Together Now has been built to embrace the adaption to online learning whilst <br>
-			  	 still creating the familiarity of a place we spent learning and making memories.<br>
-				 ------------------------------------------------------------------------------
-				 <br>
-				 Sorry I couldn't include everyone but please visit our gradshow <br>
-				 website to see all the students and their hard work @ www.rmitlookwemadeit.com <br><br>
-				 Thankyou to: Everyone involved, Three.js Discord and Amy Tung. <br>
-			   	 Typefaces: Avara - Raphaël Bastide | WorkSans - Wei Huang<br>
-				 Music by: Daisuke Miyatani <br><br>
-				
-				 My socials: @weekly_jam | studio-jams.com <br><br>
-				
-				 Click to enter | WASD/Arrow keys to move | Mouse to look around | Esc to exit
-		</h2>
-		</div>
+			<h1> Together Now </h1>
+			<div id="para" class="para">
+			 	<p>
+				 This is a virtual replication of Melbourne's RMIT's Building 9 Level 3
+				 created by Jamie Tung for his graduation piece. Inside is
+			   a collection of Communication Design students' works that I
+			   have met throughout the three years. Due to covid circumstances,
+				 Together Now is built to embrace the adaption to online learning whilst
+			   still creating the familiarity of a place we spent learning and making memories.
+			 	 </p>
+				 <p>
+				 Keeping in mind that many people struggled with online classes and lack of interactions,
+				 I wanted to build this space so that people could also share it to their extended friends
+				 and family, similar to an invite to the graduation show.
+				 </p>
+				 <p>
+				 Thankyou to: Everyone involved, Three.js Discord and Amy Tung.<br>
+			   Typefaces: Avara - Raphaël Bastide | WorkSans - Wei Huang<br>
+				 Music by: Lullatone
+			 	 </p>
 
 
 
-		<!-- <div class="scene"></div> -->
+		     <h2>
+					 My socials:
+					 <a href="https://www.instagram.com/weekly_jam/"target="_blank">@Weekly_Jam</a> |
+					 <a href="https://www.jamietung.com/"target="_blank">Jamietung.com</a> <br><br>
+
+					 Click to enter | WASD/Arrow keys to move | Mouse to look around | Esc to exit<br><br>
+					 *All work within belongs to the artists listed besides the works
+				 </h2>
+			 </div>
+			</div>
+ </body>
+
+ <div id="icons" class="icons">	</div>
+
+
+
+
+
 		<script src="libraries/three.min.js"></script>
 		<script src="libraries/PointerLockControls.js"></script>
 		<script src="libraries/GLTFLoader.js"></script>
 
-		<video id="video" loop crossOrigin="anonymous" playsinline style="display:none" muted >
-		</video>
+		<video id="video" loop crossOrigin="anonymous" playsinline style="display:none" muted ></video>
+		<video id="video2" loop crossOrigin="anonymous2" playsinline style="display:none" muted ></video>
 
-		<video id="video2" loop crossOrigin="anonymous2" playsinline style="display:none" muted >
-		</video>
+
+
 
 
 <script>
-
-
 
 	    var scene,camera,renderer, controls, model;
 
@@ -94,12 +101,13 @@ scene.fog = new THREE.Fog(0xFFFFFF, 10, 500);
 
 // Audio  =====================================================
 
-      document.body.addEventListener( 'click', function (run) {
-	var listener = new THREE.AudioListener();
+	document.body.addEventListener('click', function (run) {
 
+
+	var listener = new THREE.AudioListener();
 	var audio = new THREE.Audio( listener );
 	var audioLoader = new THREE.AudioLoader();
-	audioLoader.load('sound/pvg.mp3', function( buffer ) {
+	audioLoader.load('sound/Lullatone.mp3', function( buffer ) {
 
 	audio.setBuffer( buffer );
 	audio.setVolume( 0.1 );
@@ -113,13 +121,12 @@ scene.fog = new THREE.Fog(0xFFFFFF, 10, 500);
 	audioLoader2.load('sound/ambience.mp3', function( buffer ) {
 
 	audio2.setBuffer( buffer );
-	audio2.setVolume( 0.1 );
+	audio2.setVolume( 0.05 );
 	audio2.setLoop( true );
 	audio2.play();
 
 	});
-   });
-
+},{once: true});
 
 
 
@@ -162,13 +169,14 @@ scene.add( imageObject2 );
 video2.src = "sound/m.mp4";
 video2.load();
 video2.play();
+
 imageObject2.position.set(132,3,-225);
 imageObject2.rotation.y = -1.57;
 
 
 //Camera Things
 camera = new THREE.PerspectiveCamera( 60, window.innerWidth/ window.innerHeight, 1, 500 );
-camera.position.set(250,0,0);
+camera.position.set(255,0,0);
 camera.rotation.y = 1.10;
 
 
@@ -178,7 +186,7 @@ scene.add(ambient);
 
 
 // Renderer
-renderer = new THREE.WebGLRenderer(); //{antialias:true}
+renderer = new THREE.WebGLRenderer({antialias:true}); //{antialias:true}
 
 // for strange three.js lighting correction
 renderer.outputEncoding = THREE.sRGBEncoding;
@@ -358,6 +366,11 @@ renderer.render( scene, camera);
 		};
 			window.addEventListener('resize',onWindowResize,false);
 
+			//COMPOSER
+
+			var composer = new THREE.EffectComposer(renderer);
+			var renderPass = new THREE.RenderPass(scene, camera);
+			composer.addPass(renderPass);
 
 
 
