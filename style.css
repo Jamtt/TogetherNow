@@ -120,7 +120,7 @@ p {
   right: 15px;
   background-size:contain;
   background-repeat: no-repeat;
-  background-image:url('/Assets/icons.svg');
+  background-image:url('/Assets/Icons.svg');
   filter: brightness(0.5) sepia(2) hue-rotate(100deg) saturate(0);
 }
 
