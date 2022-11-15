@@ -114,8 +114,8 @@ p {
   position: absolute;
   display: block;
   max-width: 100%;
-  width: 400px;
-  height: 100px;
+  width: 500px;
+  height: 120px;
   bottom: -10px;
   right: 15px;
   background-size:contain;
